@@ -9,7 +9,7 @@ from pololu.motors import Maestro, MicroSSC
 from ros_pololu.msg import MotorCommand
 from sensor_msgs.msg import JointState
 from ros_pololu import PololuMotor
-from std_msgs.msg import String
+from std_msgs.msg import String, Int32
 import time
 import logging
 
@@ -31,6 +31,7 @@ class RosPololuNode:
         self._controller_type = rospy.get_param("~controller", "Maestro")
         self._hw_fail = rospy.get_param("~hw_required", False)
         self._motors = {}
+        self._inputs = {}
         self.idle = False
         if rospy.has_param("~pololu_motors_yaml"):
             config_yaml = rospy.get_param("~pololu_motors_yaml")
@@ -40,20 +41,13 @@ class RosPololuNode:
             except:
                 logger.warn("Error loading config files")
             # Get existing motors config and update those configs if callibration data changed
-            motors = rospy.get_param('motors',[])
-
             for name, cfg in config.items():
-                self._motors[name] = PololuMotor(name, cfg)
-            #     cfg = self._motors[name].get_calibrated_config()
-            #     cfg['topic'] = topic_prefix.strip("/")
-            #     cfg['hardware'] = 'pololu'
-            #     for i, m in enumerate(motors):
-            #         if m['name'] == name:
-            #             motors[i] = cfg
-            #             break
-            #     else:
-            #         motors.append(cfg)
-            # rospy.set_param('motors', motors)
+                if 'input_name' in cfg.keys():
+                    self._inputs[name] = cfg
+                    self._inputs[name]['topic'] = rospy.Publisher('inputs/{}'.format(name), Int32, queue_size=1)
+                else:
+                    self._motors[name] = PololuMotor(name, cfg)
+            rospy.logerr(self._inputs)
         try:
             if self._controller_type == 'Maestro':
                 self.controller = Maestro(port)
@@ -100,7 +94,9 @@ class RosPololuNode:
                     time.sleep(0.01)
                     self.controller.clean()
             self.controller.clean()
-
+        if len(self._inputs) > 0:
+            for input in self._inputs.itervalues():
+                input['topic'].publish(self.get_position(input['motor_id']))
         # Publish the states
         msg = JointState()
         for i, m in self._motors.items():
@@ -166,6 +162,14 @@ class RosPololuNode:
             self.controller.setAcceleration(id, acceleration)
         except AttributeError:
             pass
+
+    def get_position(self, id):
+        try:
+            pos = self.controller.getPosition(id)
+            return pos
+        except:
+            return -1
+
 
     def sync_callback(self, msg):
         """
