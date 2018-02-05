@@ -50,7 +50,7 @@ class RosPololuNode:
             rospy.logerr(self._inputs)
         try:
             if self._controller_type == 'Maestro':
-                self.controller = Maestro(port)
+                self.controller = Maestro(port, writeTimeout=1.0)
             if self._controller_type == 'MicroSSC':
                 self.controller = MicroSSC(port)
         except Exception as ex:
