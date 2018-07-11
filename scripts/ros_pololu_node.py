@@ -2,16 +2,17 @@
 
 __author__ = 'vytas'
 
-import rospy
 import math
 import yaml
-from pololu.motors import Maestro, MicroSSC
-from ros_pololu.msg import MotorCommand
-from sensor_msgs.msg import JointState
-from ros_pololu import PololuMotor
-from std_msgs.msg import String, Int32
 import time
 import logging
+
+import rospy
+from hr_msgs.msg import MotorCommand
+from pololu.motors import Maestro, MicroSSC
+from ros_pololu import PololuMotor
+from sensor_msgs.msg import JointState
+from std_msgs.msg import String, Int32
 
 COMMAND_RATE = 24
 logger = logging.getLogger('hr.ros_pololu.ros_pololu_node')
