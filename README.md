@@ -38,4 +38,5 @@ In addition if motors are not configured, the motor_id can be sent as joint name
  - *command_rate* : Rate for commands to be sent. Default: 24
  - *dyn_speed*: Calculate speed based on the period of the servo and command rate. Only applies to when sync enabled. and applies for Maestro controller only.
  - *servo_rate*: Servo frequency set on Maestro board. Required for dynamic speed control
- - *safety*: If motors_safety node enabled the pololu node will subscribe topics with added "safety/" prefix##### Copyright (c) 2013-2018 Hanson Robotics, Ltd. 
+ - *safety*: If motors_safety node enabled the pololu node will subscribe topics with added "safety/" prefix
+ ##### Copyright (c) 2013-2018 Hanson Robotics, Ltd. 
