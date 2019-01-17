@@ -1,6 +1,7 @@
 # ros_pololu
-Driver for Pololu motors with ROS.
-Controls Pololu Maestro as well as Micro Serial Servo Controller 
+ROS driver for Pololu motors
+.
+Controls Pololu Maestro as well as Micro Serial Servo Controller.
 
 ### Requirements 
 [Pololu Motors](https://github.com/hansonrobotics/pololu-motors) needs to be installed
@@ -39,4 +40,8 @@ In addition if motors are not configured, the motor_id can be sent as joint name
  - *dyn_speed*: Calculate speed based on the period of the servo and command rate. Only applies to when sync enabled. and applies for Maestro controller only.
  - *servo_rate*: Servo frequency set on Maestro board. Required for dynamic speed control
  - *safety*: If motors_safety node enabled the pololu node will subscribe topics with added "safety/" prefix
+ 
+## Status
+As of 2019, this package is actively used.
+ 
  ##### Copyright (c) 2013-2018 Hanson Robotics, Ltd. 
