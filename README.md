@@ -44,4 +44,4 @@ In addition if motors are not configured, the motor_id can be sent as joint name
 ## Status
 As of 2019, this package is actively used.
  
- ##### Copyright (c) 2013-2018 Hanson Robotics, Ltd. 
+ ##### Copyright (c) 2016-2018 Hanson Robotics, Ltd. 
